@@ -8,6 +8,7 @@ Done
 -Simple Movement
 
 To Do
+-Revamp some code to use PointStruct
 -Enemies (Asteroids)
 -Bullets
 -UI
