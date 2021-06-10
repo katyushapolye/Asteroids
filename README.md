@@ -7,12 +7,12 @@ Done
 -Boiler code (Main Game loop, Frame timing etc)
 -Colision, 
 -Simple Movement
+-Enemy Base class and Movement
 
 To Do
--Revamp some code to use PointStruct
--Enemies (Asteroids)
+-Resource Management Class (Top Priority)
 -Bullets
--UI
+-GameEvents(Player death etc)
 -Physics
 
 
