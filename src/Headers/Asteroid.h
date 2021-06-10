@@ -33,7 +33,7 @@ private:
 
 
 	sf::Sprite 					aSprite;
-	sf::Texture					aTexture;
+	sf::Texture 				aTexture;
 	sf::Sound       			aSoundDestroy;
 	sf::SoundBuffer 			aSoundDestroyBuffer;
 

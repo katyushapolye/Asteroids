@@ -3,8 +3,6 @@
 
 const float PI = 3.1415;
 
-//Create a resource management class
-
 
 Asteroid::Asteroid(float initX, float initY, float initRadius,float initVelocity,float initAngle):
 		Collider(initRadius - (18 * (initRadius / 60)), 0, 0, EnemyCollider),
