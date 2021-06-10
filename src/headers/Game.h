@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Collider.h"
 #include "Asteroid.h"
+#include "TextureManager.h"
 
 
 class Game
@@ -22,8 +23,10 @@ private:
 
 private:
 	sf::RenderWindow 						mWindow;
+	TextureManager					mTextureManager;
 	Player 									mPlayer;
 	Asteroid 								mDebugAsteroid;
+	std::vector<Asteroid>                   mAsteroids;
 
 
 

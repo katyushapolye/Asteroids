@@ -4,7 +4,8 @@
 class Asteroid : public Collider
 {
 public:
-	Asteroid(float initX, float initY, float initRadius,float initVelocity,float initAngle);
+	Asteroid(float initX, float initY, float initRadius,float initVelocity,
+			float initAngle,sf::Texture& aTexture);
 	//~Asteroid();
 	sf::Sprite& 		get_sprite();
 	float               get_position_debug();
@@ -33,8 +34,6 @@ private:
 
 
 	sf::Sprite 					aSprite;
-	sf::Texture 				aTexture;
-	sf::Text              		aDebugText;
 
 
 

@@ -19,6 +19,7 @@ void TextureManager::set_texture(TextureID tID){
 	{
 	case PlayerTexture:
 		tempTexture.loadFromFile("Assets/Player/gShip.png");
+		//add check to avoid multiple textures
 		tMap.insert(std::pair<TextureID,sf::Texture>(PlayerTexture,tempTexture));
 		break;
 

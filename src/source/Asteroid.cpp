@@ -4,11 +4,10 @@
 const float PI = 3.1415;
 
 
-Asteroid::Asteroid(float initX, float initY, float initRadius,float initVelocity,float initAngle):
+Asteroid::Asteroid(float initX, float initY, float initRadius,
+				   float initVelocity,float initAngle,sf::Texture& aTexture):
 		Collider(initRadius - (18 * (initRadius / 60)), 0, 0, EnemyCollider),
 		aSprite(),
-		aTexture(),
-		aDebugText(),
 		aPositionX(initX),
 		aPositionY(initY),
 		aRadius(initRadius - 10),
@@ -16,18 +15,7 @@ Asteroid::Asteroid(float initX, float initY, float initRadius,float initVelocity
 		aVelocity(calculate_velocity_resultant(initVelocity))
 
 {
-	//Loading Resources
-	if (!(aTexture.loadFromFile("Assets/Asteroid/gAsteroid.png")))
-	{
-		std::cout << "Failed To Load Texture";
-	}
-
-	aTexture.loadFromFile("Assets/Asteroid/gAsteroid.png");
 	aSprite.setTexture(aTexture);
-
-
-	//Setting Variables
-
 
 	//Setting Visuals
 	float scale = initRadius / 60;

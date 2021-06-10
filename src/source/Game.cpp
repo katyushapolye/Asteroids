@@ -2,13 +2,14 @@
 #include <headers/Player.h>
 #include <filesystem>
 #include <iostream>
-Game::Game() : mWindow(sf::VideoMode(mScreenX, mScreenY), "Asteroid"),
-			   mPlayer(),
-			   mDebugAsteroid(150,150,120,45,90)
-
-
+Game::Game() : mWindow(sf::VideoMode(mScreenX, mScreenY), "Asteroid"),	
+			   mTextureManager(),
+			   mPlayer(mTextureManager.get_texture(PlayerTexture)),
+			   mDebugAsteroid(150,150,120,45,90,mTextureManager.get_texture(EnemyTexture)),
+			   mAsteroids()
 
 {
+
 
 	mWindow.clear(sf::Color::Black);
 
@@ -64,11 +65,18 @@ void Game::get_input()
 
 void Game::update_screen()
 {
+	
 	mWindow.clear(sf::Color::Black);
+
 	mWindow.draw(mPlayer.get_sprite());
 	mWindow.draw(mPlayer.get_collider_visual());
+
+
 	mWindow.draw(mDebugAsteroid.get_sprite());
 	mWindow.draw(mDebugAsteroid.get_collider_visual());
+
+
+
 
 	mWindow.display();
 }

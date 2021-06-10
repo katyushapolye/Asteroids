@@ -8,7 +8,7 @@
 class Player : public Collider //derives from collider and takes its public function as well as the atributes, if not public, then all would be private, and only the class could acess
 {
 public:
-	Player();
+	Player(sf::Texture& pTexture);
 	sf::Sprite&                     get_sprite();
 	void                            send_input(sf::Keyboard::Key pKey, bool sIsPressed);
 	void                            update_player(sf::Time frameTime);
@@ -44,7 +44,6 @@ private:
 
 private:
 	sf::                            Sprite pSprite;
-	sf::						    Texture pTexture;
 	float							pPositionX;
 	float							pPositionY;
 	float							pVelocity;

@@ -2,20 +2,19 @@
 #include <iostream>
 const float PI = 3.1415;
 
-Player::Player() : Collider(20, 0, 0, PlayerCollider),
-				   pSprite(),
-				   pTexture(),
-				   pPositionX(),
-				   pPositionY(),
-				   pVelocity(300),
-				   pIsMovingUp(),
-				   pIsMovingDown(),
-				   pIsTurningLeft(),
-				   pIsTurningRight(),
-				   pTimeSinceLastFrame()
+Player::Player(sf::Texture& pTexture) : 
+				Collider(20, 0, 0, PlayerCollider),
+				pSprite(),
+				pPositionX(),
+				pPositionY(),
+				pVelocity(300),
+				pIsMovingUp(),
+				pIsMovingDown(),
+				pIsTurningLeft(),
+				pIsTurningRight(),
+				pTimeSinceLastFrame()
 
 {
-	pTexture.loadFromFile("Assets/Player/gShip.png");
 	pSprite.setTexture(pTexture);
 	pSprite.setOrigin(25, 30);
 	pSprite.setScale(1, 1);
