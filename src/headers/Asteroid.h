@@ -6,18 +6,16 @@ class Asteroid : public Collider
 public:
 	Asteroid(float initX, float initY, float initRadius,float initVelocity,
 			float initAngle,sf::Texture& aTexture);
-	//~Asteroid();
 	sf::Sprite& 		get_sprite();
-	float               get_position_debug();
+	Point				get_position();
 	void 				update_asteroid(sf::Time frameTime);
+	float 				get_radius();
+	float  			    get_aproximate_velocity();
+	float				get_angle();
 
-
-
-	//~Asteroid();
 
 private:
 	void				set_position(float x, float y);
-	Point				get_position();
 	void				change_position(float offSetX, float offSetY);
 	void				change_position(sf::Vector2<float> offSet);
 	sf::Vector2<float>  calculate_velocity_resultant(float velocity);

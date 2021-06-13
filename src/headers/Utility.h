@@ -2,6 +2,8 @@
 #pragma once
 const unsigned int mScreenX = 600;
 const unsigned int mScreenY = 600;
+const int MAX_TEXTURES = 3;
+const int MAX_SOUNDS = 3;
 
 struct Point
 {
@@ -25,10 +27,14 @@ enum TextureID{
 	PlayerTexture,
 	EnemyTexture,
 	MissileTexture
-
 };
 
-const int MAX_TEXTURES = 10;
+enum SoundID{
+	PlayerDeathSound,
+	MissileSound,
+	AsteroidExplosionSound,
+};
+
 
 
 

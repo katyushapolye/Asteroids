@@ -21,9 +21,11 @@ Asteroid::Asteroid(float initX, float initY, float initRadius,
 	float scale = initRadius / 60;
 	aSprite.setOrigin(44.5, 49);
 	aSprite.setScale(scale, scale);
+	aSprite.setRotation(initAngle);
 	this->set_position(aPositionX, aPositionY);
 	this->update_collider_position(aPositionX, aPositionY);
 }
+
 
 sf::Vector2<float>  Asteroid::calculate_velocity_resultant(float velocity){
 
@@ -48,7 +50,19 @@ Point Asteroid::get_position()
 {
 	return Point(aPositionX, aPositionY);
 }
-//reset position on edge
+
+float Asteroid::get_radius(){
+	return aRadius;
+}
+
+float Asteroid::get_aproximate_velocity(){
+	return aVelocity.x + aVelocity.y;
+}
+
+float Asteroid::get_angle(){
+	return aAngle;
+}
+
 void Asteroid::change_position(sf::Vector2<float> offSet)
 {
 	aPositionX = aPositionX + offSet.x;
@@ -65,8 +79,8 @@ void Asteroid::change_position(float offSetX, float offSetY)
 
 void Asteroid::update_asteroid(sf::Time frameTime)
 {
-	change_position(aVelocity*frameTime.asSeconds());
 	check_asteroid_general_bounds();
+	change_position(aVelocity*frameTime.asSeconds());
 	update_collider_position(aPositionX, aPositionY);
 }
 

@@ -2,25 +2,42 @@
 #include <iostream>
 const float PI = 3.1415;
 
-Player::Player(sf::Texture& pTexture) : 
+Player::Player(sf::Texture& pTexture,sf::Texture& mInitTexture): 
 				Collider(20, 0, 0, PlayerCollider),
 				pSprite(),
+				mTexture(mInitTexture),
+				pMissiles(),
+				pMissileLauchSound(),
+				pMissileCooldown(),
 				pPositionX(),
 				pPositionY(),
 				pVelocity(300),
-				pIsMovingUp(),
-				pIsMovingDown(),
-				pIsTurningLeft(),
-				pIsTurningRight(),
+				pIsMovingUp(false),
+				pIsMovingDown(false),
+				pIsTurningLeft(false),
+				pIsTurningRight(false),
+				pShoot(false),
 				pTimeSinceLastFrame()
 
 {
+	pMissileLauchSound.setBuffer(SoundManager::get_sound(MissileSound));
+	pMissileLauchSound.setVolume(50);
 	pSprite.setTexture(pTexture);
 	pSprite.setOrigin(25, 30);
 	pSprite.setScale(1, 1);
 	this->set_rotation(0);
 	this->set_position(300, 300);
 	this->update_collider_position(pPositionX, pPositionY);
+}
+
+void Player::reset(){
+	set_position(300,300);
+	set_rotation(0);
+	pShoot = false;
+	pIsMovingDown = false;
+	pIsMovingUp = false;
+	pIsTurningLeft = false;
+	pIsTurningRight = false;
 }
 
 sf::Sprite &Player::get_sprite()
@@ -77,10 +94,46 @@ void Player::set_rotation(float angle)
 	}
 }
 
+std::vector<Missile>& Player::get_all_active_missiles(){
+	return pMissiles;
+}
+
 void Player::change_rotation(float angleOffSet)
 {
 	pSprite.rotate(angleOffSet);
 	pAngle = pSprite.getRotation();
+}
+
+bool Player::check_player_cooldown(){
+	if(pMissileCooldown.getElapsedTime().asSeconds()>0.5f){
+		return true;
+	}
+	return false;
+}
+
+void Player::player_shoot(){
+	if( check_player_cooldown()){
+		pMissileCooldown.restart();
+		Missile temp(pPositionX,pPositionY,pAngle,mTexture);
+		pMissileLauchSound.play();
+		pMissiles.push_back(temp);
+
+	}
+}
+
+void Player::update_missiles(sf::Time frameTime){
+	
+	for (size_t i = 0; i < pMissiles.size(); i++)
+	{
+		pMissiles.at(i).update_missile(frameTime);
+		if(pMissiles.at(i).get_missile_lifetime().asSeconds() > 1.0f || pMissiles.at(i).mNeedsDestruction == true){
+			pMissiles.erase(pMissiles.begin()+i);
+
+		}
+	}
+	
+
+
 }
 
 void Player::send_input(sf::Keyboard::Key pKey, bool pIspressed)
@@ -93,18 +146,21 @@ void Player::handle_input(sf::Keyboard::Key pKey, bool pIspressed)
 	switch (pKey)
 	{
 		/*Set flags for key pressed and released, then moving the player,need to think more on how to handle multiple keys*/
-	case sf::Keyboard::A:
+	case sf::Keyboard::Left :
 		pIsTurningLeft = pIspressed;
 		break;
-	case sf::Keyboard::D:
+	case sf::Keyboard::Right:
 		pIsTurningRight = pIspressed;
 		break;
-	case sf::Keyboard::S:
+	case sf::Keyboard::Down:
 		pIsMovingDown = pIspressed;
 		break;
-	case sf::Keyboard::W:
+	case sf::Keyboard::Up:
 		pIsMovingUp = pIspressed;
 		break;
+	case sf::Keyboard::Space:
+		pShoot = pIspressed;
+		break;	
 	default:
 		break;
 	}
@@ -122,6 +178,7 @@ void Player::update_player(sf::Time frameTime)
 {
 	sf::Vector2<float> pVelocity = calculate_velocity_resultant();
 	float deltaTime = frameTime.asSeconds();
+
 	if (pIsMovingUp)
 	{
 		change_position(pVelocity.x * deltaTime, -pVelocity.y * deltaTime);
@@ -132,36 +189,29 @@ void Player::update_player(sf::Time frameTime)
 	}
 	if (pIsTurningLeft)
 	{
-		change_rotation(-100 * frameTime.asSeconds());
+		change_rotation(-250 * frameTime.asSeconds());
 	}
 	if (pIsTurningRight)
 	{
-		change_rotation(100 * frameTime.asSeconds());
+		change_rotation(250 * frameTime.asSeconds());
+	}
+	if(pShoot){
+		player_shoot();
+
 	}
 	check_general_player_bounds();
 	update_collider_position(pPositionX, pPositionY);
+	update_missiles(frameTime);
 }
 
 //overrides the oncollision parent class method
 
-void Player::on_collision_enter(ColliderTag cTag)
-{
-	Collider::on_collision_enter(cTag);
-	if (cTag == EnemyCollider)
-	{
-		return;
-	}
-	else
-	{
-		return;
-	}
+void Player::on_collision(ColliderTag cTag)
+{	
+	Collider::on_collision(cTag);
 }
 
-void Player::collision_state_reset(ColliderTag cTag)
-{
-	Collider::collision_state_reset(cTag);
-	return;
-}
+
 
 void Player::check_general_player_bounds()
 {

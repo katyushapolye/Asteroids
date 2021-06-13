@@ -8,11 +8,7 @@ TextureManager::TextureManager():
 		set_texture(TextureID(i));
 	}
 
-
-
-
 }
-
 void TextureManager::set_texture(TextureID tID){
 	sf::Texture tempTexture;
 	switch (tID)
@@ -29,10 +25,11 @@ void TextureManager::set_texture(TextureID tID){
 		break;
 
 	case MissileTexture:
+		tempTexture.loadFromFile("Assets/Missile/gMissile.png");
+		tMap.insert(std::pair<TextureID,sf::Texture>(MissileTexture,tempTexture));
 		break;
-
-
 	default:
+		printf("TEXTURE NOT FOUND -- ERROR CODE 4");
 		break;
 	}
 	return;

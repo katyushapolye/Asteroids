@@ -17,6 +17,7 @@ Collider::Collider(float initRadius, float cInitX, float cInitY, ColliderTag ini
 	update_collider_position(cColliderX, cColliderY);
 }
 
+
 sf::CircleShape& Collider::get_collider_visual()
 {
 	return cColliderVisual;
@@ -35,31 +36,24 @@ bool Collider::check_colision(Collider& sCollision)
 	bool IsColiding = calculate_colision(sColliderCenter, sCollisionRadius);
 	if (IsColiding)
 	{	//USE A FLAG TO AVOID MULTIPLE ENTERS
-		this->on_collision_enter(sCollision.get_colider_tag());
-		sCollision.on_collision_enter(this->get_colider_tag());
+		this->on_collision(sCollision.get_colider_tag());
+		sCollision.on_collision(this->get_colider_tag());
 		return true;
 	}
 	else
 	{
 		//USE A FLAG TO AVOID MULTIPLE RESETS
-		this->collision_state_reset(sCollision.get_colider_tag()); //Recieve the collisiontag
-		sCollision.collision_state_reset(this->get_colider_tag()); //Pass my collidertag to the collision
+ //Pass my collidertag to the collision
 		return false;
 	}
 }
 
-void Collider::on_collision_enter(ColliderTag cTag)
+void Collider::on_collision(ColliderTag cTag)
 {
-	if(cTag ==  3){return;}
 	cColliderVisual.setOutlineColor(sf::Color::Green);
 	return;
 }
-void Collider::collision_state_reset(ColliderTag cTag)
-{
-	if(cTag ==  3){return;}
-	cColliderVisual.setOutlineColor(sf::Color::Red);
-	return;
-}
+
 
 bool Collider::calculate_colision(Point sCollisionPosition, float sCollisionRadius)
 {
