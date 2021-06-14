@@ -1,5 +1,6 @@
 #include <headers/Game.h>
 #include <headers/Player.h>
+#include <stdlib.h>
 #include <filesystem>
 #include <iostream>
 Game::Game() : mWindow(sf::VideoMode(mScreenX, mScreenY), "Asteroid"),	
@@ -36,10 +37,14 @@ Game::Game() : mWindow(sf::VideoMode(mScreenX, mScreenY), "Asteroid"),
 }
 /*===========================================TO DO======================================
 
-3-Make Asteroids Generate on random, but not on the Playerexlusion zone
+
+--NICE TO HAVE
+
+--DIFICULTY SETTING --> DIRECTLY PROPORCIONAL TO THE VELOCITY OF ASTEROIDS -> BIGGER RANDOM NUMBERS;
+
 */
 
-//ToDo
+
 
 
 void Game::init_ui(){
@@ -104,8 +109,22 @@ void Game::init_level_enemies(int eNumber){
 	destroy_all_asteroids();
 	for (int i = 0; i < eNumber; i++)
 	{
-		Asteroid aTemp(0 + (i*100),50,120,(i+2)*70,10+i*45,mTextureManager.get_texture(EnemyTexture));
+		int rAngle =  rand()%360;
+		if(i%2 == 0){
+		int rX = rand()%100;
+		int rY = rand()%100;
+		Asteroid aTemp(rX,rY,120,(i+2)*70,rAngle,mTextureManager.get_texture(EnemyTexture));
 		mAsteroids.push_back(std::move(aTemp));
+
+		}
+		else{
+		int rX = rand()%100 + 500;
+		int rY = rand()%100 + 500;
+		Asteroid aTemp(rX,rY,120,(i+2)*70,rAngle,mTextureManager.get_texture(EnemyTexture));
+		mAsteroids.push_back(std::move(aTemp));
+
+		}
+		
 		
 	}
 }

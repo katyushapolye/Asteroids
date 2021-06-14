@@ -1,4 +1,5 @@
 #include "headers/Player.h"
+#include <math.h>
 #include <iostream>
 const float PI = 3.1415;
 
@@ -11,13 +12,17 @@ Player::Player(sf::Texture& pTexture,sf::Texture& mInitTexture):
 				pMissileCooldown(),
 				pPositionX(),
 				pPositionY(),
-				pVelocity(300),
 				pIsMovingUp(false),
 				pIsMovingDown(false),
 				pIsTurningLeft(false),
 				pIsTurningRight(false),
 				pShoot(false),
-				pTimeSinceLastFrame()
+				pTimeSinceLastFrame(),
+				pForce(0),
+				pAceleration(0),
+				pXForce(0),
+				pYForce(0),
+				pMass(0.005)
 
 {
 	pMissileLauchSound.setBuffer(SoundManager::get_sound(MissileSound));
@@ -166,34 +171,27 @@ void Player::handle_input(sf::Keyboard::Key pKey, bool pIspressed)
 	}
 }
 
-sf::Vector2<float> Player::calculate_velocity_resultant()
-{
-	sf::Vector2<float> vResultant{pVelocity * sin((pAngle * PI) / 180),
-								  (pVelocity * cos((pAngle * PI) / 180))};
-	return vResultant;
-}
+
 //reset position
 
 void Player::update_player(sf::Time frameTime)
 {
-	sf::Vector2<float> pVelocity = calculate_velocity_resultant();
+
+
+	update_momentum();
+	add_force();
 	float deltaTime = frameTime.asSeconds();
 
-	if (pIsMovingUp)
-	{
-		change_position(pVelocity.x * deltaTime, -pVelocity.y * deltaTime);
-	}
-	if (pIsMovingDown)
-	{
-		change_position(-pVelocity.x * deltaTime, +pVelocity.y * deltaTime);
-	}
+	change_position( (pXAceleration* (frameTime.asSeconds()*frameTime.asSeconds()))/2,
+					  (-pYAceleration* (frameTime.asSeconds()*frameTime.asSeconds()))/2
+	  );
 	if (pIsTurningLeft)
 	{
-		change_rotation(-250 * frameTime.asSeconds());
+		change_rotation(-100 * frameTime.asSeconds());
 	}
 	if (pIsTurningRight)
 	{
-		change_rotation(250 * frameTime.asSeconds());
+		change_rotation(100 * frameTime.asSeconds());
 	}
 	if(pShoot){
 		player_shoot();
@@ -209,6 +207,46 @@ void Player::update_player(sf::Time frameTime)
 void Player::on_collision(ColliderTag cTag)
 {	
 	Collider::on_collision(cTag);
+}
+
+
+void Player::update_momentum(){
+
+	//Natural loss of momentum
+	if((pIsMovingDown == false && pIsMovingUp == false && pForce != 0) || (pIsMovingDown == true && pIsMovingUp == true && pForce != 0) ){
+		if(pForce > 0){
+			pForce -= 1;
+		}
+		else if(pForce < 0){
+			pForce += 1;
+		}		
+	}
+	
+
+	//decompose Velocity Vector;
+	pXForce =   pForce * sin((pAngle * PI) / 180);
+	pYForce =   pForce * cos((pAngle * PI) / 180);
+	//Set y and x acceleration
+	pXAceleration = pXForce/pMass;
+	pYAceleration = pYForce/pMass;
+	//Second Newton's Law F = m * a, and a/2 *(t²) = d;
+}
+
+void Player::add_force(){
+	if(pIsMovingUp == true && pForce <= 100){
+		pForce +=5;
+		if(pForce > 100){
+			pForce = 100;
+		}
+
+	}
+	if(pIsMovingDown == true && pForce >= -100){
+		pForce -=5 ;
+		if(pForce < -100){
+			pForce = -100;
+		}
+
+	}	
 }
 
 

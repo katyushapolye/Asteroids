@@ -37,6 +37,10 @@ private:
 	void							 check_player_bounds_x();
 	void 							 check_player_bounds_y();
 
+	//Physics
+	void 							 update_momentum();
+	void 						     add_force();
+
 
 
 	bool                             check_player_cooldown();
@@ -63,8 +67,19 @@ private:
 	sf::Clock 						pMissileCooldown;
 	float							pPositionX;
 	float							pPositionY;
-	float							pVelocity;
 	float							pAngle;
+
+
+	//Physics
+	int								pForce;
+	float 							pAceleration;
+
+	float 							pMass;
+	float 							pXForce;
+	float 							pYForce;
+	float 							pXAceleration;
+	float							pYAceleration;				
+
 
 	bool						    pIsMovingUp;
 	bool						    pIsMovingDown;
