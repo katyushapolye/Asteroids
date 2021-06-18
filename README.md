@@ -1,10 +1,12 @@
 # Asteroids-In-CPP-SFML
 My second project using SFML and C++
-Uses vcreddist as system dependency
 
 
 
+![image](https://user-images.githubusercontent.com/61098580/122614066-536aaa00-d05c-11eb-821e-60d073683f98.png)
+
+![image](https://user-images.githubusercontent.com/61098580/122614107-67aea700-d05c-11eb-8d39-5e2eb6486b3c.png)
 
 
-![image](https://user-images.githubusercontent.com/61098580/122614034-3e8e1680-d05c-11eb-80f6-d5d12d261808.png)
+
 
